@@ -3,6 +3,8 @@
 __author__ = "Axel Brink"
 
 import tkinter as tk
+from tkinter import Grid
+import tkinter.constants as const
 from tkinter import messagebox
 import abanagram
 
@@ -58,23 +60,48 @@ class AnagramPage(tk.Frame):
         tk.Frame.__init__(self, parent, width=300, height=500)
 
         self.root = self.winfo_toplevel()
+        Grid.columnconfigure(self, 0, weight=0)
+        Grid.columnconfigure(self, 1, weight=1)
+        Grid.columnconfigure(self, 2, weight=0)
+        Grid.rowconfigure(self, 0, weight=0)
+        Grid.rowconfigure(self, 1, weight=0)
+        Grid.rowconfigure(self, 2, weight=1)
+        Grid.rowconfigure(self, 3, weight=0)
+        self.grid(row=0, column=0, sticky=const.N + const.S + const.E + const.W)
+
+        self.inputlabel = tk.Label(self, text="Input:", justify=tk.constants.LEFT)
+        self.inputlabel.grid(row=0, column=0, sticky=const.N + const.E)
 
         self.entry = tk.Entry(self)
-        self.entry.pack(pady=10, padx=10, side=tk.constants.TOP, fill=tk.constants.X)
+        #self.entry.pack(pady=10, padx=10, side=tk.constants.TOP, fill=tk.constants.X)
+        self.entry.grid(row=0, column=1, columnspan=2, sticky=const.N + const.E + const.W)
         self.entry.focus_set()
         self.entry.bind('<Return>', (lambda e: self.startbutton.invoke()))
 
+        self.maxwordslabel = tk.Label(self, text="Max number of words:", justify=const.LEFT)
+        #self.maxwordslabel.pack(side=tk.constants.TOP)
+        self.maxwordslabel.grid(row=1, column=0, sticky=const.N + const.E)
+
+        self.maxwordsentry = tk.Entry(self)
+        #self.maxwordsentry.pack(side=tk.constants.RIGHT)
+        self.maxwordsentry.grid(row=1, column=1, sticky=const.N + const.E + const.W)
+
         self.startbutton = tk.Button(self, text="Start", command=self.on_start)
-        self.startbutton.pack(side=tk.constants.TOP)
+        #self.startbutton.pack(side=tk.constants.TOP)
+        self.startbutton.grid(row=1, column=2)
 
         self.resultlist = ScrollListBox(self, parent)
-        self.resultlist.pack(pady=10, padx=10, side=tk.constants.TOP, expand=1, fill=tk.constants.BOTH)
+        #self.resultlist.pack(pady=10, padx=10, side=tk.constants.TOP, expand=1, fill=tk.constants.BOTH)
+        self.resultlist.grid(row=2, column=0, columnspan=3, sticky=const.N + const.S + const.E + const.W)
 
-        self.label = tk.Label(self, text="Abanagram by Axel Brink. Ready.", justify=tk.constants.LEFT)
-        self.label.pack(side=tk.constants.TOP)
+        self.statuslabel = tk.Label(self, text="Abanagram by Axel Brink. Ready.", justify=tk.constants.LEFT)
+        #self.label.pack(side=tk.constants.TOP)
+        self.statuslabel.grid(row=3, columnspan=2)
 
         #self.pack()
-        self.pack_propagate(0) # tell frame not to let its children control its size
+        #self.pack_propagate(0) # tell frame not to let its children control its size
+
+        #self.grid_propagate(0)
 
         self.anagramfinder = abanagram.AnagramFinder(result_callback=self.add_result, status_callback=self.status_update)
 
@@ -82,14 +109,14 @@ class AnagramPage(tk.Frame):
 
     def on_start(self, event=None):
         #self.label.config(text="Ja! " + self.entry.get())
-        self.label.config(text="Searching for anagrams of '" + self.entry.get() + "'...")
+        self.statuslabel.config(text="Searching for anagrams of '" + self.entry.get() + "'...")
 
         self.root.config(cursor="wait")
         self.root.update()
 
         self.resultlist.listbox.delete(0, tk.constants.END)
-        self.anagramfinder.search(self.entry.get(), 2)
-        self.label.config(text="Ready.")
+        self.anagramfinder.search(self.entry.get(), int(self.maxwordsentry.get()))
+        self.statuslabel.config(text="Ready.")
         #for i in range(50):
         #    self.add_result("Abc " + str(i))
 
@@ -98,7 +125,7 @@ class AnagramPage(tk.Frame):
         self.update()
 
     def status_update(self, text):
-        self.label.config(text=text)
+        self.statuslabel.config(text=text)
         if text.startswith("Done"):
             self.root.config(cursor="")
 
