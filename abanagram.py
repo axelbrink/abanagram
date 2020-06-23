@@ -10,9 +10,9 @@ from collections import Counter
 
 MAXNUMWORDS = 2
 
-WORDSFILES = [os.path.join('OpenTaal-210G-woordenlijsten', 'OpenTaal-210G-basis-gekeurd.txt'),
-              os.path.join('OpenTaal-210G-woordenlijsten', 'OpenTaal-210G-flexievormen.txt')]
-              #os.path.join('OpenTaal-210G-woordenlijsten', 'OpenTaal-210G-basis-ongekeurd.txt')
+WORDSFILES = [os.path.join('OpenTaal-woordenlijsten', 'basiswoorden-gekeurd.txt'),
+              os.path.join('OpenTaal-woordenlijsten', 'flexies-ongekeurd.txt')]
+              #os.path.join('OpenTaal-woordenlijsten', 'basiswoorden-ongekeurd.txt')
 
 class WordBag:
     def __init__(self, text):
