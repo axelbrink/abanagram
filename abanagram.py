@@ -73,7 +73,7 @@ class AnagramProducerThread(threading.Thread):
     def readwordlist(self, filename):
         #wordlist = []
         self.status_callback("Reading input file %s ..." % filename)
-        starttime = time.clock()
+        # starttime = time.clock()
         # The word should contain at least two consecutive normal characters.
         excludepattern = re.compile(r"^[a-zA-Z\ '\-]*[a-zA-Z\ ]{2,}[a-zA-Z\ '\-\r\n]*$")  # re.compile(r'[^a-zA-Z\'\ \n\r]')
         #excludepattern = re.compile(r"#^[A-Za-zÀ-ÿ\ '\-]*[A-Za-zÀ-ÿ\ ]{2,}[A-Za-zÀ-ÿ\ '\-\r\n]*$")
@@ -87,7 +87,7 @@ class AnagramProducerThread(threading.Thread):
         # * woorden die een cijfer bevatten
         # * woorden die bestaan uit hoofdletters
         f.close()
-        print("  (took %.1f sec)" % (time.clock() - starttime))
+        # print("  (took %.1f sec)" % (time.clock() - starttime))
 
     @staticmethod
     def filterwordlist_contains(wordlist, queryword):
@@ -140,7 +140,7 @@ class AnagramProducerThread(threading.Thread):
                     self.search(filteredwordlist, list(matchedwords) + [word], queryword - word, allresults, maxnumwords)
 
     def _start_search(self, query, maxnumwords):
-        self.status_callback("Starting search: %s (max %i words)" % (query, maxnumwords))
+        self.status_callback("Searching for anagrams of: '%s' (max %i words)" % (query, maxnumwords))
         starttime = time.clock()
         queryword = WordBag(query)
         self.allresults = []

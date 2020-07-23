@@ -85,6 +85,8 @@ class AnagramPage(tk.Frame):
         self.maxwordsentry = tk.Entry(self)
         #self.maxwordsentry.pack(side=tk.constants.RIGHT)
         self.maxwordsentry.grid(row=1, column=1, sticky=const.N + const.E + const.W)
+        self.maxwordsentry.insert(0, "2")  # Default value: 2
+        self.maxwordsentry.bind('<Return>', (lambda e: self.startbutton.invoke()))
 
         self.startbutton = tk.Button(self, text="Start", command=self.on_start)
         #self.startbutton.pack(side=tk.constants.TOP)
@@ -106,10 +108,9 @@ class AnagramPage(tk.Frame):
         self.anagramfinder = abanagram.AnagramFinder(result_callback=self.add_result, status_callback=self.status_update)
 
 
-
     def on_start(self, event=None):
         #self.label.config(text="Ja! " + self.entry.get())
-        self.statuslabel.config(text="Searching for anagrams of '" + self.entry.get() + "'...")
+        #self.statuslabel.config(text="Searching for anagrams of '" + self.entry.get() + "'...")
 
         self.root.config(cursor="wait")
         self.root.update()
